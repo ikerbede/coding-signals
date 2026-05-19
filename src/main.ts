@@ -1,36 +1,24 @@
-import { Counter } from './counter.ts';
 import { displayCounterActions } from './counter-actions.ts';
 import { displayCounterValue } from './counter-value.ts';
+import { Observable } from './observable.ts';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <h1>Implement signals</h1>
 <section id="counter_actions"></section>
 <section id="counter_value"></section>
-<button style="display: none" type="button" id="update_btn">Update value</button>
 `;
 
-const counter = new Counter();
+const counter = new Observable<number>(0);
 
 displayCounterActions(
   document.querySelector<HTMLElement>('section#counter_actions')!,
-  counter
+  counter,
 );
 
-displayCounterValue(
-  document.querySelector<HTMLElement>('section#counter_value')!,
-  counter
-);
-
-/*
-const updateValue = () =>
+const updateValue = (count: number) =>
   displayCounterValue(
     document.querySelector<HTMLElement>('section#counter_value')!,
-    counter
+    count,
   );
 
-updateValue();
-
-document
-  .querySelector<HTMLButtonElement>('button#update_btn')!
-  .addEventListener('click', () => updateValue());
-*/
+counter.subscribe((value: number) => updateValue(value));
