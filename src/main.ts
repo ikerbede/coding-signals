@@ -1,6 +1,6 @@
 import { displayCounterActions } from './counter-actions.ts';
 import { displayCounterValue } from './counter-value.ts';
-import { Observable } from './observable.ts';
+import { computed, effect, signal } from './context.ts';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <h1>Implement signals</h1>
@@ -8,17 +8,18 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <section id="counter_value"></section>
 `;
 
-const counter = new Observable<number>(0);
+const counter = signal(0);
+const doubleCounter = computed(() => counter.get() * 2);
 
 displayCounterActions(
   document.querySelector<HTMLElement>('section#counter_actions')!,
   counter,
 );
 
-const updateValue = (count: number) =>
+effect(() =>
   displayCounterValue(
     document.querySelector<HTMLElement>('section#counter_value')!,
-    count,
-  );
-
-counter.subscribe((value: number) => updateValue(value));
+    counter,
+    doubleCounter
+  ),
+);

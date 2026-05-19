@@ -1,8 +1,8 @@
-import type { Observable } from './observable.ts';
+import type { Signal } from "./signal";
 
 export function displayCounterActions(
   element: HTMLElement,
-  counter: Observable<number>,
+  counter: Signal<number>,
 ): void {
   element.innerHTML = `
     <h2>Actions on counter</h2>
